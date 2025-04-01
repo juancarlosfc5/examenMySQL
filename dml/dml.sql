@@ -161,7 +161,7 @@ INSERT INTO Telefono (telefono, persona_id, tipoTel_id) VALUES
 ('3132075504', 21, 1),
 ('3214180419', 22, 1),
 ('3143913746', 23, 1),
-('3156717659', 23, 1);
+('6077246122', 23, 2);
 
 -- Inserción de estados de campers
 INSERT INTO EstadoCamper (estado) VALUES 
@@ -205,23 +205,24 @@ INSERT INTO Acudiente (persona_id, camper_id) VALUES
 (22, 9),
 (23, 10);
 
--- Inserción de trainers
-INSERT INTO Trainer (codigo, persona_id, ruta_id) VALUES 
-('J', 1, 1),
-('A', 2, 3),
-('U', 3, 2);
-
 -- Inserción de bases de datos
 INSERT INTO Basedatos (nombre) VALUES
 ('MySQL'),
 ('PostgreSQL'),
-('MongoDB');
+('MongoDB'),
+('Oracle');
 
 -- Inserción de rutas
 INSERT INTO Ruta (nombre, SGBD1_id, SGBD2_id) VALUES
 ('NetCore', 1, 2),
 ('Spring Boot', 1, 2),
-('Node.JS', 1, 3);
+('Node.JS', 3, 4);
+
+-- Inserción de trainers
+INSERT INTO Trainer (codigo, persona_id, ruta_id) VALUES 
+('J', 1, 1),
+('A', 2, 3),
+('U', 3, 2);
 
 -- Inserción de horarios
 INSERT INTO Horario (horaInicio, horaFin) VALUES 

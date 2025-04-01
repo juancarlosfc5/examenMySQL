@@ -117,6 +117,22 @@ CREATE TABLE Acudiente (
     FOREIGN KEY (camper_id) REFERENCES Camper(id) ON DELETE CASCADE
 );
 
+-- Tabla de Base de datos
+CREATE TABLE Basedatos (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(100) NOT NULL
+);
+
+-- Tabla de Rutas de Entrenamiento
+CREATE TABLE Ruta (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(100) NOT NULL,
+    SGBD1_id INT NOT NULL,
+    SGBD2_id INT NOT NULL,
+    FOREIGN KEY (SGBD1_id) REFERENCES Basedatos(id) ON DELETE CASCADE,
+    FOREIGN KEY (SGBD2_id) REFERENCES Basedatos(id) ON DELETE CASCADE
+);
+
 -- Tabla de Trainer
 CREATE TABLE Trainer (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -125,22 +141,6 @@ CREATE TABLE Trainer (
     ruta_id INT NOT NULL,
     FOREIGN KEY (persona_id) REFERENCES Persona(id) ON DELETE CASCADE,
     FOREIGN KEY (ruta_id) REFERENCES Ruta(id) ON DELETE CASCADE
-);
-
--- Tabla de Base de datos
-CREATE TABLE Basedatos (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(100) NOT NULL,
-);
-
--- Tabla de Rutas de Entrenamiento
-CREATE TABLE Ruta (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(100) NOT NULL,
-    SGBD1_id INT UNIQUE NOT NULL,
-    SGBD2_id INT UNIQUE NOT NULL,
-    FOREIGN KEY (SGBD1_id) REFERENCES Basedatos(id) ON DELETE CASCADE,
-    FOREIGN KEY (SGBD2_id) REFERENCES Basedatos(id) ON DELETE CASCADE
 );
 
 -- Tabla de Horario
@@ -247,4 +247,18 @@ CREATE TABLE Nota (
     tipoEvaluacion_id INT NOT NULL,
     FOREIGN KEY (evaluacion_id) REFERENCES Evaluacion(id) ON DELETE CASCADE,
     FOREIGN KEY (tipoEvaluacion_id) REFERENCES TipoEvaluacion(id) ON DELETE CASCADE
+);
+
+-- Tabla de Asistencia
+CREATE TABLE Asistencia (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    fecha DATE NOT NULL,
+    asistio BOOLEAN NOT NULL DEFAULT FALSE,
+    camper_id INT NOT NULL,
+    area_id INT NOT NULL,
+    horario_id INT NOT NULL,
+    UNIQUE KEY unique_asistencia (camper_id, area_id, horario_id, fecha),
+    FOREIGN KEY (camper_id) REFERENCES Camper(id) ON DELETE CASCADE,
+    FOREIGN KEY (area_id) REFERENCES AreaEntrenamiento(id) ON DELETE CASCADE,
+    FOREIGN KEY (horario_id) REFERENCES Horario(id) ON DELETE CASCADE
 );
