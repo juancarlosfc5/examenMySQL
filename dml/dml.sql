@@ -77,7 +77,7 @@ INSERT INTO Ciudad (nombre, estado_id) VALUES
 ('Puerto Carreño', 32);
 
 -- Inserción de direcciones
-INSERT INTO Direccion (codigo_postal, direccion_detalle, ciudad_id) VALUES 
+INSERT INTO Direccion (codigoPostal, descripcion, ciudad_id) VALUES 
 (680003, 'Zona Franca Edificio Zenith Piso 6, Bucaramanga, Santander', 27),
 (110111, 'Calle 45 #12-34, Bogotá', 14),
 (110112, 'Carrera 7 #85-10, Bogotá', 14),
@@ -103,7 +103,7 @@ INSERT INTO TipoDocumento (nombre) VALUES
 ('Cédula de Extranjería');
 
 -- Inserción de estados de campers
-INSERT INTO EstadoCamper (descripcion) VALUES 
+INSERT INTO EstadoCamper (estado) VALUES 
 ('En proceso de ingreso'),
 ('Inscrito'),
 ('Aprobado'),
@@ -113,7 +113,7 @@ INSERT INTO EstadoCamper (descripcion) VALUES
 ('Retirado');
 
 -- Inserción de niveles de riesgo
-INSERT INTO Riesgo (descripcion) VALUES
+INSERT INTO Riesgo (nivel) VALUES
 ('Bajo'),
 ('Medio'),
 ('Alto');
@@ -124,20 +124,242 @@ INSERT INTO Ruta (nombre) VALUES
 ('Spring Boot'),
 ('Node.JS');
 
--- Inserción de módulos
-INSERT INTO Modulo (nombre, ruta_id) VALUES 
-('Introducción', 1), ('Python', 1), ('HTML', 1), ('CSS', 1), ('JavaScript', 1), ('C#', 1), ('MySQL', 1), ('PostgreSQL', 1),
-('Introducción', 2), ('Python', 2), ('HTML', 2), ('CSS', 2), ('JavaScript', 2), ('Java', 2), ('MySQL', 2), ('PostgreSQL', 2),
-('Introducción', 3), ('Python', 3), ('HTML', 3), ('CSS', 3), ('JavaScript', 3), ('JavaScript avanzado', 3), ('MySQL', 3), ('PostgreSQL', 3);
+-- Inserción de skills
+INSERT INTO Skill (nombre, ruta_id) VALUES
+-- Ruta NetCore
+('Introducción a la programación', 1),
+('Python', 1),
+('HTML + CSS', 1),
+('Scrum y Metodologías ágiles', 1),
+('GitHub y Control de versiones', 1),
+('JavaScript básico', 1),
+('introducción al Backend y Bases de datos', 1),
+('MySQL I', 1),
+('MySQL II', 1),
+('C#', 1),
+-- Ruta Spring Boot
+('Introducción a la programación', 2),
+('Python', 2),
+('HTML + CSS', 2),
+('Scrum y Metodologías ágiles', 2),
+('GitHub y Control de versiones', 2),
+('JavaScript básico', 2),
+('introducción al Backend y Bases de datos', 2),
+('MySQL I', 2),
+('MySQL II', 2),
+('Java', 2),
+-- Ruta Node.JS
+('Introducción a la programación', 3),
+('Python', 3),
+('HTML + CSS', 3),
+('Scrum y Metodologías ágiles', 3),
+('GitHub y Control de versiones', 3),
+('JavaScript básico', 3),
+('introducción al Backend y Bases de datos', 3),
+('MySQL I', 3),
+('MySQL II', 3),
+('JavaScript avanzado', 3);
 
 -- Inserción de relación Ruta-Modulo
-INSERT INTO RutaModulo (ruta_id, modulo_id) VALUES 
-(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8),
-(2, 9), (2, 10), (2, 11), (2, 12), (2, 13), (2, 14), (2, 15), (2, 16),
-(3, 17), (3, 18), (3, 19), (3, 20), (3, 21), (3, 22), (3, 23), (3, 24);
+INSERT INTO RutaSkill (ruta_id, skill_id) VALUES 
+(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8), (1, 9), (1, 10),
+(2, 11), (2, 12), (2, 13), (2, 14), (2, 15), (2, 16), (2, 17), (2, 18), (2, 19), (2, 20),
+(3, 21), (3, 22), (3, 23), (3, 24), (3, 25), (3, 26), (3, 27), (3, 28), (3, 29), (3, 30);
+
+-- Inserción de Modulos
+INSERT INTO Modulo (nombre, skill_id) VALUES
+-- Ruta NetCore
+('Modulo 1: Fundamentos de Algoritmos', 1),
+('Modulo 2: Resolución de Problemas', 1),
+('Modulo 1: Sintaxis de Python', 2),
+('Modulo 2: Estructuras de Control', 2),
+('Modulo 1: Maquetación con HTML', 3),
+('Modulo 2: Estilos con CSS', 3),
+('Modulo 1: Fundamentos de Scrum', 4),
+('Modulo 2: Roles en Scrum', 4),
+('Modulo 1: Uso de Git', 5),
+('Modulo 2: Flujo de Trabajo en GitHub', 5),
+('Modulo 1: Sintaxis Básica de JavaScript', 6),
+('Modulo 2: Manipulación del DOM', 6),
+('Modulo 1: Conceptos de Bases de Datos', 7),
+('Modulo 2: Modelo Relacional', 7),
+('Modulo 1: Consultas Básicas en MySQL', 8),
+('Modulo 2: Funciones y Procedimientos', 8),
+('Modulo 1: Normalización en MySQL', 9),
+('Modulo 2: Optimización de Consultas', 9),
+('Modulo 1: Sintaxis de C#', 10),
+('Modulo 2: Programación Orientada a Objetos en C#', 10),
+-- Ruta Spring Boot
+('Modulo 1: Fundamentos de Algoritmos', 11),
+('Modulo 2: Resolución de Problemas', 11),
+('Modulo 1: Sintaxis de Python', 12),
+('Modulo 2: Estructuras de Control', 12),
+('Modulo 1: Maquetación con HTML', 13),
+('Modulo 2: Estilos con CSS', 13),
+('Modulo 1: Fundamentos de Scrum', 14),
+('Modulo 2: Roles en Scrum', 14),
+('Modulo 1: Uso de Git', 15),
+('Modulo 2: Flujo de Trabajo en GitHub', 15),
+('Modulo 1: Sintaxis Básica de JavaScript', 16),
+('Modulo 2: Manipulación del DOM', 16),
+('Modulo 1: Conceptos de Bases de Datos', 17),
+('Modulo 2: Modelo Relacional', 17),
+('Modulo 1: Consultas Básicas en MySQL', 18),
+('Modulo 2: Funciones y Procedimientos', 18),
+('Modulo 1: Normalización en MySQL', 19),
+('Modulo 2: Optimización de Consultas', 19),
+('Modulo 1: Sintaxis de Java', 20),
+('Modulo 2: Programación Orientada a Objetos en Java', 20),
+-- Ruta Node.JS
+('Modulo 1: Fundamentos de Algoritmos', 21),
+('Modulo 2: Resolución de Problemas', 21),
+('Modulo 1: Sintaxis de Python', 22),
+('Modulo 2: Estructuras de Control', 22),
+('Modulo 1: Maquetación con HTML', 23),
+('Modulo 2: Estilos con CSS', 23),
+('Modulo 1: Fundamentos de Scrum', 24),
+('Modulo 2: Roles en Scrum', 24),
+('Modulo 1: Uso de Git', 25),
+('Modulo 2: Flujo de Trabajo en GitHub', 25),
+('Modulo 1: Sintaxis Básica de JavaScript', 26),
+('Modulo 2: Manipulación del DOM', 26),
+('Modulo 1: Conceptos de Bases de Datos', 27),
+('Modulo 2: Modelo Relacional', 27),
+('Modulo 1: Consultas Básicas en MySQL', 28),
+('Modulo 2: Funciones y Procedimientos', 28),
+('Modulo 1: Normalización en MySQL', 29),
+('Modulo 2: Optimización de Consultas', 29),
+('Modulo 1: JavaScript Avanzado', 30),
+('Modulo 2: Desarrollo con Node.js', 30);
+
+-- Inserción de Sesiones
+INSERT INTO Sesion (nombre, modulo_id) VALUES 
+-- Ruta NetCore
+('Sesion 1: Introducción a Fundamentos de Algoritmos', 1),
+('Sesion 2: Aplicación de Fundamentos de Algoritmos', 1),
+('Sesion 1: Introducción a Resolución de Problemas', 2),
+('Sesion 2: Aplicación de Resolución de Problemas', 2),
+('Sesion 1: Introducción a Sintaxis de Python', 3),
+('Sesion 2: Aplicación de Sintaxis de Python', 3),
+('Sesion 1: Introducción a Estructuras de Control', 4),
+('Sesion 2: Aplicación de Estructuras de Control', 4),
+('Sesion 1: Introducción a Maquetación con HTML', 5),
+('Sesion 2: Aplicación de Maquetación con HTML', 5),
+('Sesion 1: Introducción a Estilos con CSS', 6),
+('Sesion 2: Aplicación de Estilos con CSS', 6),
+('Sesion 1: Introducción a Fundamentos de Scrum', 7),
+('Sesion 2: Aplicación de Fundamentos de Scrum', 7),
+('Sesion 1: Introducción a Roles en Scrum', 8),
+('Sesion 2: Aplicación de Roles en Scrum', 8),
+('Sesion 1: Introducción a Uso de Git', 9),
+('Sesion 2: Aplicación de Uso de Git', 9),
+('Sesion 1: Introducción a Flujo de Trabajo en GitHub', 10),
+('Sesion 2: Aplicación de Flujo de Trabajo en GitHub', 10),
+('Sesion 1: Introducción a Sintaxis Básica de JavaScript', 11),
+('Sesion 2: Aplicación de Sintaxis Básica de JavaScript', 11),
+('Sesion 1: Introducción a Manipulación del DOM', 12),
+('Sesion 2: Aplicación de Manipulación del DOM', 12),
+('Sesion 1: Introducción a Conceptos de Bases de Datos', 13),
+('Sesion 2: Aplicación de Conceptos de Bases de Datos', 13),
+('Sesion 1: Introducción a Modelo Relacional', 14),
+('Sesion 2: Aplicación de Modelo Relacional', 14),
+('Sesion 1: Introducción a Consultas Básicas en MySQL', 15),
+('Sesion 2: Aplicación de Consultas Básicas en MySQL', 15),
+('Sesion 1: Introducción a Funciones y Procedimientos', 16),
+('Sesion 2: Aplicación de Funciones y Procedimientos', 16),
+('Sesion 1: Introducción a Normalización en MySQL', 17),
+('Sesion 2: Aplicación de Normalización en MySQL', 17),
+('Sesion 1: Introducción a Optimización de Consultas', 18),
+('Sesion 2: Aplicación de Optimización de Consultas', 18),
+('Sesion 1: Introducción a Sintaxis de C#', 19),
+('Sesion 2: Aplicación de Sintaxis de C#', 19),
+('Sesion 1: Introducción a Programación Orientada a Objetos en C#', 20),
+('Sesion 2: Aplicación de Programación Orientada a Objetos en C#', 20),
+-- Ruta Spring Boot
+('Sesion 1: Introducción a Fundamentos de Algoritmos', 21),
+('Sesion 2: Aplicación de Fundamentos de Algoritmos', 21),
+('Sesion 1: Introducción a Resolución de Problemas', 22),
+('Sesion 2: Aplicación de Resolución de Problemas', 22),
+('Sesion 1: Introducción a Sintaxis de Python', 23),
+('Sesion 2: Aplicación de Sintaxis de Python', 23),
+('Sesion 1: Introducción a Estructuras de Control', 24),
+('Sesion 2: Aplicación de Estructuras de Control', 24),
+('Sesion 1: Introducción a Maquetación con HTML', 25),
+('Sesion 2: Aplicación de Maquetación con HTML', 25),
+('Sesion 1: Introducción a Estilos con CSS', 26),
+('Sesion 2: Aplicación de Estilos con CSS', 26),
+('Sesion 1: Introducción a Fundamentos de Scrum', 27),
+('Sesion 2: Aplicación de Fundamentos de Scrum', 27),
+('Sesion 1: Introducción a Roles en Scrum', 28),
+('Sesion 2: Aplicación de Roles en Scrum', 28),
+('Sesion 1: Introducción a Uso de Git', 29),
+('Sesion 2: Aplicación de Uso de Git', 29),
+('Sesion 1: Introducción a Flujo de Trabajo en GitHub', 30),
+('Sesion 2: Aplicación de Flujo de Trabajo en GitHub', 30),
+('Sesion 1: Introducción a Sintaxis Básica de JavaScript', 31),
+('Sesion 2: Aplicación de Sintaxis Básica de JavaScript', 31),
+('Sesion 1: Introducción a Manipulación del DOM', 32),
+('Sesion 2: Aplicación de Manipulación del DOM', 32),
+('Sesion 1: Introducción a Conceptos de Bases de Datos', 33),
+('Sesion 2: Aplicación de Conceptos de Bases de Datos', 33),
+('Sesion 1: Introducción a Modelo Relacional', 34),
+('Sesion 2: Aplicación de Modelo Relacional', 34),
+('Sesion 1: Introducción a Consultas Básicas en MySQL', 35),
+('Sesion 2: Aplicación de Consultas Básicas en MySQL', 35),
+('Sesion 1: Introducción a Funciones y Procedimientos', 36),
+('Sesion 2: Aplicación de Funciones y Procedimientos', 36),
+('Sesion 1: Introducción a Normalización en MySQL', 37),
+('Sesion 2: Aplicación de Normalización en MySQL', 37),
+('Sesion 1: Introducción a Optimización de Consultas', 38),
+('Sesion 2: Aplicación de Optimización de Consultas', 38),
+('Sesion 1: Introducción a Sintaxis de Java', 39),
+('Sesion 2: Aplicación de Sintaxis de Java', 39),
+('Sesion 1: Introducción a Programación Orientada a Objetos en Java', 40),
+('Sesion 2: Aplicación de Programación Orientada a Objetos en Java', 40),
+-- Ruta Node.JS
+('Sesion 1: Introducción a Fundamentos de Algoritmos', 41),
+('Sesion 2: Aplicación de Fundamentos de Algoritmos', 41),
+('Sesion 1: Introducción a Resolución de Problemas', 42),
+('Sesion 2: Aplicación de Resolución de Problemas', 42),
+('Sesion 1: Introducción a Sintaxis de Python', 43),
+('Sesion 2: Aplicación de Sintaxis de Python', 43),
+('Sesion 1: Introducción a Estructuras de Control', 44),
+('Sesion 2: Aplicación de Estructuras de Control', 44),
+('Sesion 1: Introducción a Maquetación con HTML', 45),
+('Sesion 2: Aplicación de Maquetación con HTML', 45),
+('Sesion 1: Introducción a Estilos con CSS', 46),
+('Sesion 2: Aplicación de Estilos con CSS', 46),
+('Sesion 1: Introducción a Fundamentos de Scrum', 47),
+('Sesion 2: Aplicación de Fundamentos de Scrum', 47),
+('Sesion 1: Introducción a Roles en Scrum', 48),
+('Sesion 2: Aplicación de Roles en Scrum', 48),
+('Sesion 1: Introducción a Uso de Git', 49),
+('Sesion 2: Aplicación de Uso de Git', 49),
+('Sesion 1: Introducción a Flujo de Trabajo en GitHub', 50),
+('Sesion 2: Aplicación de Flujo de Trabajo en GitHub', 50),
+('Sesion 1: Introducción a Sintaxis Básica de JavaScript', 51),
+('Sesion 2: Aplicación de Sintaxis Básica de JavaScript', 51),
+('Sesion 1: Introducción a Manipulación del DOM', 52),
+('Sesion 2: Aplicación de Manipulación del DOM', 52),
+('Sesion 1: Introducción a Conceptos de Bases de Datos', 53),
+('Sesion 2: Aplicación de Conceptos de Bases de Datos', 53),
+('Sesion 1: Introducción a Modelo Relacional', 54),
+('Sesion 2: Aplicación de Modelo Relacional', 54),
+('Sesion 1: Introducción a Consultas Básicas en MySQL', 55),
+('Sesion 2: Aplicación de Consultas Básicas en MySQL', 55),
+('Sesion 1: Introducción a Funciones y Procedimientos', 56),
+('Sesion 2: Aplicación de Funciones y Procedimientos', 56),
+('Sesion 1: Introducción a Normalización en MySQL', 57),
+('Sesion 2: Aplicación de Normalización en MySQL', 57),
+('Sesion 1: Introducción a Optimización de Consultas', 58),
+('Sesion 2: Aplicación de Optimización de Consultas', 58),
+('Sesion 1: Introducción a JavaScript Avanzado', 59),
+('Sesion 2: Aplicación de JavaScript Avanzado', 59),
+('Sesion 1: Introducción a Desarrollo con Node.js', 60),
+('Sesion 2: Aplicación de Desarrollo con Node.js', 60);
 
 -- Inserción de Personas
-INSERT INTO Persona (identificacion, nombre, apellido, email, tipo_documento_id, direccion_id) VALUES 
+INSERT INTO Persona (identificacion, nombre, apellido, email, tipoDoc_id, direccion_id) VALUES 
 -- Trainers
 ('123456789', 'Jholver', 'Pardo', 'jholver@campuslands.edu', 1, 1),
 ('987654321', 'Adrian', 'Amaya', 'adrian@campuslands.edu', 1, 1),
@@ -165,34 +387,28 @@ INSERT INTO Persona (identificacion, nombre, apellido, email, tipo_documento_id,
 ('200000009', 'Oscar', 'Castro', 'oscar.castro@mail.com', 1, 10),
 ('200000010', 'Gloria', 'Mejia', 'gloria.mejia@mail.com', 1, 11);
 
-INSERT INTO Trainer (persona_id, ruta_id, letra_codigo) VALUES 
+INSERT INTO Trainer (persona_id, ruta_id, codigo) VALUES 
 (1, 1, 'J'),
 (2, 3, 'A'),
 (3, 2, 'U');
 
 -- Inserción de tipos de teléfono
-INSERT INTO TipoTelefono (tipo) VALUES
+INSERT INTO TipoTelefono (tipoTel) VALUES
 ('Celular'),
 ('Fijo');
 
 -- Inserción de horarios
-INSERT INTO Horario (hora, codigo) VALUES 
-('06:00:00', 1),
-('10:00:00', 2),
-('14:00:00', 3),
-('18:00:00', 4);
+INSERT INTO Horario (horaInicio, horaFin) VALUES 
+('06:00:00', '09:00:00'),
+('10:00:00', '13:00:00'),
+('14:00:00', '17:00:00'),
+('18:00:00', '21:00:00');
 
 -- Inserción de áreas de entrenamiento
-INSERT INTO AreaEntrenamiento (nombre, capacidad, sede_id) VALUES 
-('Apolo', 33, 1),
-('Sputnik', 33, 1),
-('Artemis', 33, 1);
-
--- Inserción de tipos de evaluación
-INSERT INTO TipoEvaluacion (descripcion) VALUES
-('Examen'),
-('Proyecto'),
-('Actividad');
+INSERT INTO AreaEntrenamiento (nombre, sede_id) VALUES 
+('Apolo', 1),
+('Sputnik', 1),
+('Artemis', 1);
 
 -- Inserción de campers
 INSERT INTO Camper (persona_id, estado_id, riesgo_id) VALUES 
@@ -221,10 +437,10 @@ INSERT INTO Acudiente (persona_id, camper_id) VALUES
 (23, 10);
 
 -- Inserción de grupos
-INSERT INTO Grupo (nombre, codigo, capacidad) VALUES 
-('Grupo J1', 'J1', 33),
-('Grupo A2', 'A2', 33),
-('Grupo U3', 'U3', 33);
+INSERT INTO Grupo (nombre, capacidad) VALUES 
+('J1', 33),
+('A2', 33),
+('U3', 33);
 
 -- Asignación de campers a grupos
 INSERT INTO CamperGrupo (camper_id, grupo_id) VALUES 
@@ -232,20 +448,26 @@ INSERT INTO CamperGrupo (camper_id, grupo_id) VALUES
 (4, 2), (5, 2), (6, 2),
 (7, 3), (8, 3), (9, 3);
 
--- Inserción de notas para campers en distintos módulos
-INSERT INTO Evaluacion (camper_id, modulo_id, tipo_evaluacion_id, nota) VALUES 
-(1, 1, 1, 90), (1, 2, 2, 76), (1, 3, 3, 80),
-(2, 4, 1, 84), (2, 5, 2, 78), (2, 6, 3, 82),
-(3, 7, 1, 70), (3, 8, 2, 94), (3, 9, 3, 78),
-(4, 10, 1, 96), (4, 11, 2, 74), (4, 12, 3, 92),
-(5, 13, 1, 86), (5, 14, 2, 80), (5, 15, 3, 76),
-(6, 16, 1, 78), (6, 17, 2, 88), (6, 18, 3, 82),
-(7, 19, 1, 80), (7, 20, 2, 90), (7, 21, 3, 74),
-(8, 22, 1, 84), (8, 23, 2, 86), (8, 24, 3, 82),
-(9, 22, 1, 50), (9, 23, 2, 50), (9, 24, 3, 50);
+-- Tabla de Asignación de Entrenamiento
+INSERT INTO AsignacionEntrenamiento (trainer_id, horario_id, area_id, grupo_id) VALUES 
+(1, 1, 1, 1),
+(2, 2, 2, 2),
+(3, 3, 3, 3);
+
+-- Inserción de notas para campers en distintos skills
+INSERT INTO Notas (camper_id, skill_id, notaExamen, notaProyecto, notaActividad) VALUES 
+(1, 1, 100, 100, 100),
+(2, 4, 93, 94,95),
+(3, 7, 80, 83, 87),
+(4, 10, 70, 78, 70),
+(5, 13, 73, 72, 79),
+(6, 16, 68, 65, 69),
+(7, 21, 62, 63, 65),
+(8, 23, 56, 58, 59),
+(9, 26, 50, 50, 50);
 
 -- Inserción de teléfonos
-INSERT INTO Telefono (persona_id, telefono, tipo_telefono_id) VALUES
+INSERT INTO Telefono (persona_id, telefono, tipoTel_id) VALUES
 (1, '3001234567', 1),
 (2, '3019876543', 1),
 (3, '3024567891', 1),
