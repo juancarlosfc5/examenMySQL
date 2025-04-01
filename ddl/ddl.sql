@@ -69,6 +69,22 @@ CREATE TABLE Persona (
     FOREIGN KEY (direccion_id) REFERENCES Direccion(id) ON DELETE CASCADE
 );
 
+-- Tabla de Tipo de Telefono
+CREATE TABLE TipoTelefono (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    tipoTel VARCHAR(20) UNIQUE NOT NULL
+);
+
+-- Tabla de Teléfonos
+CREATE TABLE Telefono (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    telefono VARCHAR(20) NOT NULL,
+    persona_id INT NOT NULL,
+    tipoTel_id INT NOT NULL,
+    FOREIGN KEY (persona_id) REFERENCES Persona(id) ON DELETE CASCADE,
+    FOREIGN KEY (tipoTel_id) REFERENCES TipoTelefono(id) ON DELETE CASCADE
+);
+
 -- Tabla de Estado Camper
 CREATE TABLE EstadoCamper (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -101,36 +117,30 @@ CREATE TABLE Acudiente (
     FOREIGN KEY (camper_id) REFERENCES Camper(id) ON DELETE CASCADE
 );
 
--- Tabla de Rutas de Entrenamiento
-CREATE TABLE Ruta (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(100) NOT NULL
-);
-
 -- Tabla de Trainer
 CREATE TABLE Trainer (
     id INT PRIMARY KEY AUTO_INCREMENT,
+    codigo CHAR(1) UNIQUE NOT NULL,
     persona_id INT UNIQUE NOT NULL,
     ruta_id INT NOT NULL,
-    codigo CHAR(1) UNIQUE NOT NULL,
     FOREIGN KEY (persona_id) REFERENCES Persona(id) ON DELETE CASCADE,
     FOREIGN KEY (ruta_id) REFERENCES Ruta(id) ON DELETE CASCADE
 );
 
--- Tabla de Tipo de Telefono
-CREATE TABLE TipoTelefono (
+-- Tabla de Base de datos
+CREATE TABLE Basedatos (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    tipoTel VARCHAR(20) UNIQUE NOT NULL
+    nombre VARCHAR(100) NOT NULL,
 );
 
--- Tabla de Teléfonos
-CREATE TABLE Telefono (
+-- Tabla de Rutas de Entrenamiento
+CREATE TABLE Ruta (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    persona_id INT NOT NULL,
-    telefono VARCHAR(20) NOT NULL,
-    tipoTel_id INT NOT NULL,
-    FOREIGN KEY (persona_id) REFERENCES Persona(id) ON DELETE CASCADE,
-    FOREIGN KEY (tipoTel_id) REFERENCES TipoTelefono(id) ON DELETE CASCADE
+    nombre VARCHAR(100) NOT NULL,
+    SGBD1_id INT UNIQUE NOT NULL,
+    SGBD2_id INT UNIQUE NOT NULL,
+    FOREIGN KEY (SGBD1_id) REFERENCES Basedatos(id) ON DELETE CASCADE,
+    FOREIGN KEY (SGBD2_id) REFERENCES Basedatos(id) ON DELETE CASCADE
 );
 
 -- Tabla de Horario
@@ -165,7 +175,7 @@ CREATE TABLE CamperGrupo (
 );
 
 -- Tabla de Asignación de Entrenamiento
-CREATE TABLE AsignacionEntrenamiento (
+CREATE TABLE AsignacionAreaEntrenamiento (
     id INT PRIMARY KEY AUTO_INCREMENT,
     trainer_id INT NOT NULL,
     horario_id INT NOT NULL,
@@ -211,14 +221,30 @@ CREATE TABLE Sesion (
     FOREIGN KEY (modulo_id) REFERENCES Modulo(id) ON DELETE CASCADE
 );
 
--- Tabla de Notas
-CREATE TABLE Notas (
+-- Tabla de Tipo evaluación
+CREATE TABLE TipoEvaluacion (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(100) NOT NULL,
+    porcentaje DECIMAL(2,0) NOT NULL CHECK (porcentaje BETWEEN 1 AND 99)
+);
+
+-- Tabla de Evaluaciones
+CREATE TABLE Evaluacion (
     id INT PRIMARY KEY AUTO_INCREMENT,
     camper_id INT NOT NULL,
     skill_id INT NOT NULL,
-    notaExamen DECIMAL(5,1) NOT NULL,
-    notaProyecto DECIMAL(5,1) NOT NULL,
-    notaActividad DECIMAL(5,1) NOT NULL,
+    notaFinal DECIMAL(5,1),
+    estado ENUM('Aprobado', 'Reprobado'),
     FOREIGN KEY (camper_id) REFERENCES Camper(id) ON DELETE CASCADE,
     FOREIGN KEY (skill_id) REFERENCES Skill(id) ON DELETE CASCADE
+);
+
+-- Tabla de Notas
+CREATE TABLE Nota (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nota DECIMAL(5,1) NOT NULL,
+    evaluacion_id INT NOT NULL,
+    tipoEvaluacion_id INT NOT NULL,
+    FOREIGN KEY (evaluacion_id) REFERENCES Evaluacion(id) ON DELETE CASCADE,
+    FOREIGN KEY (tipoEvaluacion_id) REFERENCES TipoEvaluacion(id) ON DELETE CASCADE
 );
