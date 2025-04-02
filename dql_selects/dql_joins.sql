@@ -89,15 +89,14 @@ SELECT
     r.nombre as ruta,
     m.nombre as modulo,
     e.notaFinal,
-    e.estado,
-    e.fechaEvaluacion
+    e.estado
 FROM Evaluacion e
 JOIN Camper c ON e.camper_id = c.id
 JOIN Persona p ON c.persona_id = p.id
 JOIN Skill s ON e.skill_id = s.id
 JOIN Modulo m ON s.id = m.skill_id
 JOIN Ruta r ON s.ruta_id = r.id
-ORDER BY e.fechaEvaluacion DESC;
+ORDER BY e.notaFinal DESC;
 
 -- 7. Listar los trainers y los horarios en que están asignados a las áreas de entrenamiento.
 SELECT 

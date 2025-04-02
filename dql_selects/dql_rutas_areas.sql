@@ -25,37 +25,32 @@ JOIN Basedatos b2 ON r.SGBD2_id = b2.id;
 SELECT 
     r.nombre as ruta,
     s.nombre as skill,
-    m.nombre as modulo,
-    COUNT(DISTINCT e.camper_id) as total_estudiantes,
-    ROUND(AVG(e.notaFinal), 2) as promedio_modulo
+    m.nombre as modulo
 FROM Ruta r
 JOIN Skill s ON r.id = s.ruta_id
 JOIN Modulo m ON s.id = m.skill_id
-LEFT JOIN Evaluacion e ON s.id = e.skill_id
 GROUP BY r.id, r.nombre, s.id, s.nombre, m.id, m.nombre
 ORDER BY r.nombre, s.nombre, m.nombre;
 
 -- 4. Consultar cuántos campers hay en cada ruta.
 SELECT 
     r.nombre as ruta,
-    COUNT(DISTINCT cg.camper_id) as total_campers,
-    g.capacidad as capacidad_maxima,
-    ROUND((COUNT(DISTINCT cg.camper_id) * 100.0 / g.capacidad), 2) as porcentaje_ocupacion
+    COUNT(DISTINCT cg.camper_id) as total_campers
 FROM Ruta r
 JOIN Trainer t ON r.id = t.ruta_id
 JOIN AsignacionAreaEntrenamiento aae ON t.id = aae.trainer_id
 JOIN Grupo g ON aae.grupo_id = g.id
 LEFT JOIN CamperGrupo cg ON g.id = cg.grupo_id
-GROUP BY r.id, r.nombre, g.capacidad
+GROUP BY r.id, r.nombre
 ORDER BY total_campers DESC;
 
 -- 5. Mostrar las áreas de entrenamiento y su capacidad máxima.
 SELECT 
-    ae.nombre as area,
-    s.nombre as sede,
-    COUNT(DISTINCT g.id) as grupos_asignados,
-    SUM(g.capacidad) as capacidad_total,
-    COUNT(DISTINCT cg.camper_id) as campers_actuales
+    ae.nombre AS area,
+    s.nombre AS sede,
+    COUNT(DISTINCT g.id) AS grupos_asignados,
+    SUM(DISTINCT g.capacidad) AS capacidad_total,
+    COUNT(DISTINCT cg.camper_id) AS campers_actuales
 FROM AreaEntrenamiento ae
 JOIN Sede s ON ae.sede_id = s.id
 LEFT JOIN AsignacionAreaEntrenamiento aae ON ae.id = aae.area_id

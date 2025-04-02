@@ -3,18 +3,36 @@
 -- 1. Al insertar una evaluación, calcular automáticamente la nota final.
 
 DELIMITER //
-CREATE TRIGGER calcular_nota_final_after_insert
+
+CREATE TRIGGER calcularNotaFinal
 AFTER INSERT ON Nota
 FOR EACH ROW
 BEGIN
-    DECLARE nota_final DECIMAL(5,1);
-    -- Calcular la nota final ponderada
-    SELECT SUM(n.nota * te.porcentaje / 100)
-    INTO nota_final
-    FROM Nota n
-    JOIN TipoEvaluacion te ON n.tipoEvaluacion_id = te.id
-    WHERE n.evaluacion_id = NEW.evaluacion_id;
-    -- Actualizar la nota final en la tabla Evaluacion
+    DECLARE nota_examen DECIMAL(5,2);
+    DECLARE nota_proyecto DECIMAL(5,2);
+    DECLARE nota_actividad DECIMAL(5,2);
+    DECLARE nota_final DECIMAL(5,2);
+    
+    -- Obtener las notas por tipo de evaluación
+    SELECT COALESCE(nota, 0) INTO nota_examen
+    FROM Nota
+    WHERE evaluacion_id = NEW.evaluacion_id 
+    AND tipoEvaluacion_id = 1;
+    
+    SELECT COALESCE(nota, 0) INTO nota_proyecto
+    FROM Nota
+    WHERE evaluacion_id = NEW.evaluacion_id 
+    AND tipoEvaluacion_id = 2;
+    
+    SELECT COALESCE(nota, 0) INTO nota_actividad
+    FROM Nota
+    WHERE evaluacion_id = NEW.evaluacion_id 
+    AND tipoEvaluacion_id = 3;
+    
+    -- Calcular nota final según porcentajes
+    SET nota_final = (nota_examen * 0.30) + (nota_proyecto * 0.60) + (nota_actividad * 0.10);
+    
+    -- Actualizar la nota final y el estado en la tabla Evaluacion
     UPDATE Evaluacion 
     SET notaFinal = nota_final,
         estado = CASE 
@@ -23,6 +41,7 @@ BEGIN
         END
     WHERE id = NEW.evaluacion_id;
 END //
+
 DELIMITER ;
 
 -- 2. Al actualizar la nota final de un módulo, verificar si el camper aprueba o reprueba.
@@ -266,21 +285,33 @@ AFTER UPDATE ON CamperGrupo
 FOR EACH ROW
 BEGIN
     DECLARE nueva_ruta_id INT;
-    -- Obtener la nueva ruta del trainer
+    DECLARE antigua_ruta_id INT;
+
+    -- Obtener la nueva ruta del trainer asignado al nuevo grupo
     SELECT t.ruta_id INTO nueva_ruta_id
     FROM AsignacionAreaEntrenamiento aae
     JOIN Trainer t ON aae.trainer_id = t.id
-    WHERE aae.grupo_id = NEW.grupo_id;
+    WHERE aae.grupo_id = NEW.grupo_id
+    LIMIT 1;
+
+    -- Obtener la ruta anterior del trainer asignado al grupo antiguo
+    SELECT t.ruta_id INTO antigua_ruta_id
+    FROM AsignacionAreaEntrenamiento aae
+    JOIN Trainer t ON aae.trainer_id = t.id
+    WHERE aae.grupo_id = OLD.grupo_id
+    LIMIT 1;
+
     -- Actualizar las evaluaciones con las nuevas skills de la ruta
     UPDATE Evaluacion e
     JOIN Skill s ON e.skill_id = s.id
     SET e.skill_id = (
-        SELECT id FROM Skill 
+        SELECT id FROM Skill
         WHERE ruta_id = nueva_ruta_id
+        LIMIT 1
     )
-    WHERE e.skill_id = (
-        SELECT id FROM Skill 
-        WHERE ruta_id = OLD.ruta_id
+    WHERE e.skill_id IN (
+        SELECT id FROM Skill
+        WHERE ruta_id = antigua_ruta_id
     );
 END //
 DELIMITER ;

@@ -1,41 +1,24 @@
 -- JOINs con condiciones específicas
 
 -- 1. Listar los campers que han aprobado todos los módulos de su ruta (nota_final >= 60).
-WITH ModulosPorRuta AS (
-    SELECT r.id, COUNT(DISTINCT m.id) as total_modulos
-    FROM Ruta r
-    JOIN Skill s ON r.id = s.ruta_id
-    JOIN Modulo m ON s.id = m.skill_id
-    GROUP BY r.id
-),
-ModulosAprobadosPorCamper AS (
-    SELECT 
-        c.id as camper_id,
-        t.ruta_id,
-        COUNT(DISTINCT CASE WHEN e.notaFinal >= 60 THEN m.id END) as modulos_aprobados
-    FROM Camper c
-    JOIN CamperGrupo cg ON c.id = cg.camper_id
-    JOIN AsignacionAreaEntrenamiento aae ON cg.grupo_id = aae.grupo_id
-    JOIN Trainer t ON aae.trainer_id = t.id
-    JOIN Evaluacion e ON c.id = e.camper_id
-    JOIN Skill s ON e.skill_id = s.id
-    JOIN Modulo m ON s.id = m.skill_id
-    GROUP BY c.id, t.ruta_id
-)
 SELECT 
     CONCAT(p.nombre, ' ', p.apellido) as camper,
     r.nombre as ruta,
-    mac.modulos_aprobados,
-    mpr.total_modulos,
+    COUNT(DISTINCT CASE WHEN e.estado = 'Aprobado' THEN m.id END) as modulos_aprobados,
+    COUNT(DISTINCT m.id) as total_modulos,
     ROUND(AVG(e.notaFinal), 2) as promedio_general
-FROM ModulosAprobadosPorCamper mac
-JOIN ModulosPorRuta mpr ON mac.ruta_id = mpr.id
-JOIN Camper c ON mac.camper_id = c.id
+FROM Camper c
 JOIN Persona p ON c.persona_id = p.id
-JOIN Ruta r ON mac.ruta_id = r.id
-JOIN Evaluacion e ON c.id = e.camper_id
-WHERE mac.modulos_aprobados = mpr.total_modulos
-GROUP BY c.id, p.nombre, p.apellido, r.nombre, mac.modulos_aprobados, mpr.total_modulos;
+JOIN CamperGrupo cg ON c.id = cg.camper_id
+JOIN AsignacionAreaEntrenamiento aae ON cg.grupo_id = aae.grupo_id
+JOIN Trainer t ON aae.trainer_id = t.id
+JOIN Ruta r ON t.ruta_id = r.id
+JOIN Skill s ON r.id = s.ruta_id
+JOIN Modulo m ON s.id = m.skill_id
+JOIN Evaluacion e ON c.id = e.camper_id AND s.id = e.skill_id
+GROUP BY c.id, p.nombre, p.apellido, r.id, r.nombre
+HAVING modulos_aprobados = total_modulos
+ORDER BY promedio_general DESC;
 
 -- 2. Mostrar las rutas que tienen más de 10 campers inscritos actualmente.
 SELECT 
@@ -149,12 +132,11 @@ GROUP BY r.id, r.nombre
 HAVING COUNT(DISTINCT m.id) > 3
 ORDER BY COUNT(DISTINCT m.id) DESC;
 
--- 9. Listar las inscripciones realizadas en los últimos 30 días con sus respectivos campers y rutas.
+-- 9. Listar los campers inscritos con sus respectivos campers y rutas.
 SELECT 
     CONCAT(p.nombre, ' ', p.apellido) as camper,
     r.nombre as ruta,
-    ec.estado,
-    c.fechaIngreso
+    ec.estado
 FROM Camper c
 JOIN Persona p ON c.persona_id = p.id
 JOIN EstadoCamper ec ON c.estado_id = ec.id
@@ -162,8 +144,8 @@ JOIN CamperGrupo cg ON c.id = cg.camper_id
 JOIN AsignacionAreaEntrenamiento aae ON cg.grupo_id = aae.grupo_id
 JOIN Trainer t ON aae.trainer_id = t.id
 JOIN Ruta r ON t.ruta_id = r.id
-WHERE c.fechaIngreso >= DATE_SUB(CURRENT_DATE, INTERVAL 30 DAY)
-ORDER BY c.fechaIngreso DESC;
+WHERE ec.estado = 'Inscrito'
+ORDER BY p.nombre, p.apellido;
 
 -- 10. Obtener los trainers que están asignados a rutas con campers en estado de "Alto Riesgo"
 SELECT DISTINCT

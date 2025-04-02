@@ -21,12 +21,16 @@ RETURNS VARCHAR(20)
 DETERMINISTIC
 BEGIN
     DECLARE nota_final DECIMAL(5,1);
+
     SELECT e.notaFinal INTO nota_final
     FROM Evaluacion e
     JOIN Skill s ON e.skill_id = s.id
     JOIN Modulo m ON s.id = m.skill_id
     WHERE e.camper_id = p_camper_id 
-    AND m.id = p_modulo_id;
+    AND m.id = p_modulo_id
+    ORDER BY e.id DESC  -- Suponiendo que el ID más alto es la evaluación más reciente
+    LIMIT 1;
+
     RETURN CASE 
         WHEN nota_final >= 60 THEN 'Aprobado'
         WHEN nota_final < 60 THEN 'Reprobado'
@@ -349,3 +353,4 @@ BEGIN
     RETURN COALESCE(total, 0);
 END //
 DELIMITER ;
+

@@ -1,31 +1,66 @@
-# Examen MySQL
+# 📌 Examen MySQL II
 
-Bienvenido al repositorio del proyecto **Examen MySQL II**.
+Bienvenido al repositorio del **Examen MySQL II**. Este proyecto presenta la implementación de una base de datos relacional, incluyendo su diseño, estructura, consultas y procedimientos almacenados.
 
-## Diagrama Entidad-Relación
-Visualiza el diagrama que representa las relaciones entre las entidades:
-[Ver DiagramaERv2.png](./DiagramaERv2.png)
+---
 
-## Base de Datos
-Revisa la definición completa de la estructura de la base de datos:
-[Ver DDL de la Base de Datos](./ddl/ddl.sql)
+## 📊 Diagrama Entidad-Relación
+Visualiza la estructura de la base de datos con su modelo entidad-relación:
+📌 [Ver Diagrama ER](./DiagramaERv3.png)
 
-## Inserts
-Consulta el archivo con los **INSERTS** para poblar las tablas de la base de datos:
-[Ver DML de Inserts](./dml/dml.sql)
+---
 
-## Consultas
-Ejecuta las 150 consultas desarrolladas para validar y extraer la información:
-[Ver DQL de Consultas](./dql_selects/dql_selects.sql)
+## 🏗️ Definición de la Base de Datos
+Revisa la estructura de la base de datos con todas sus tablas y relaciones:
+📌 [Ver DDL - Definición de la Base de Datos](./ddl/ddl.sql)
 
-## Procedimientos Almacenados
-Accede a los procedimientos almacenados creados dentro del proyecto:
-[Ver DQL de Procedimientos](./dql_procedimientos/dql_procedimientos.sql)
+---
 
-## Funciones
-Consulta las funciones implementadas para realizar cálculos y operaciones:
-[Ver DQL de Funciones](./dql_funciones/dql_funciones.sql)
+## 📥 Poblamiento de Datos
+Consulta los **INSERTS** utilizados para cargar datos en la base de datos:
+📌 [Ver DML - Inserts de datos](./dml/dml.sql)
 
-## Triggers
-Explora los triggers definidos para asegurar la integridad y automatización de procesos:
-[Ver DQL de Triggers](./dql_triggers/dql_triggers.sql)
+---
+
+## 🔍 Consultas SQL (DQL)
+Ejecuta las consultas para extraer información relevante:
+- 📌 [Consultas de Campers](./dql_selects/dql_campers.sql)
+- 📌 [Consultas de Evaluaciones](./dql_selects/dql_evaluaciones.sql)
+- 📌 [Consultas de Rutas y Áreas de Entrenamiento](./dql_selects/dql_rutas_areas.sql)
+- 📌 [Consultas de Trainers](./dql_selects/dql_trainers.sql)
+- 📌 [Consultas con Subconsultas y Cálculos Avanzados](./dql_selects/dql_subconsultas_calculos.sql)
+- 📌 [Consultas con JOINs Básicos](./dql_selects/dql_joins.sql)
+- 📌 [Consultas con JOINs y Condiciones Específicas](./dql_selects/dql_joins_condiciones.sql)
+- 📌 [Consultas con JOINs y Funciones de Agregación](./dql_selects/dql_joins_funciones.sql)
+
+---
+
+## ⚙️ Procedimientos Almacenados
+Revisa los procedimientos almacenados utilizados para la automatización de tareas:
+📌 [Ver Procedimientos Almacenados](./dql_procedimientos/dql_procedimientos.sql)
+
+---
+
+## 🔢 Funciones SQL
+Consulta las funciones creadas para realizar cálculos y operaciones en la base de datos:
+📌 [Ver Funciones](./dql_funciones/dql_funciones.sql)
+
+---
+
+## 🛠️ Triggers
+Explora los triggers definidos para asegurar la integridad y automatización de la base de datos:
+📌 [Ver Triggers](./dql_triggers/dql_triggers.sql)
+
+---
+
+## 🎯 Objetivo del Proyecto
+Este examen tiene como finalidad evaluar el manejo de **MySQL II**, incluyendo el diseño de bases de datos, la normalización de datos, la implementación de consultas SQL avanzadas, procedimientos almacenados, funciones y triggers.
+
+📌 **Tecnologías Utilizadas:**
+- MySQL
+- SQL DDL, DML y DQL
+- Modelado de bases de datos (Diagrama ER)
+
+✍️ **Autor:** [Juan Carlos Flórez]
+
+📅 **Fecha de entrega:** [2025-04-01]

@@ -106,14 +106,9 @@ SELECT
     CONCAT(p.nombre, ' ', p.apellido) as trainer,
     r.nombre as ruta,
     COUNT(DISTINCT e.camper_id) as total_campers_evaluados,
-    ROUND(
-        AVG(
-            (n1.nota * 0.30) + 
-            (n2.nota * 0.60) + 
-            (n3.nota * 0.10)
-        ), 2) as promedio_notas,
+    AVG(e.notaFinal) as promedio_notas,
     COUNT(DISTINCT CASE 
-        WHEN ((n1.nota * 0.30) + (n2.nota * 0.60) + (n3.nota * 0.10)) >= 60 
+        WHEN e.estado = 'Aprobado'
         THEN e.camper_id 
     END) as campers_aprobados
 FROM Trainer t
@@ -123,9 +118,6 @@ JOIN AsignacionAreaEntrenamiento aae ON t.id = aae.trainer_id
 JOIN Grupo g ON aae.grupo_id = g.id
 JOIN CamperGrupo cg ON g.id = cg.grupo_id
 JOIN Evaluacion e ON cg.camper_id = e.camper_id
-JOIN Nota n1 ON e.id = n1.evaluacion_id AND n1.tipoEvaluacion_id = 1  -- Examen
-JOIN Nota n2 ON e.id = n2.evaluacion_id AND n2.tipoEvaluacion_id = 2  -- Proyecto
-JOIN Nota n3 ON e.id = n3.evaluacion_id AND n3.tipoEvaluacion_id = 3  -- Actividad
 GROUP BY t.id, p.nombre, p.apellido, r.nombre
 HAVING COUNT(DISTINCT e.camper_id) > 0
 ORDER BY promedio_notas DESC
