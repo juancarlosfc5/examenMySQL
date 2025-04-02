@@ -129,7 +129,13 @@ INSERT INTO Persona (identificacion, nombre, apellido, email, tipoDoc_id, direcc
 ('200000007', 'Carlos', 'Ramirez', 'carlos.ramirez@mail.com', 1, 8),
 ('200000008', 'Carmen', 'Torres', 'carmen.torres@mail.com', 1, 9),
 ('200000009', 'Oscar', 'Castro', 'oscar.castro@mail.com', 1, 10),
-('200000010', 'Gloria', 'Mejia', 'gloria.mejia@mail.com', 1, 11);
+('200000010', 'Gloria', 'Mejia', 'gloria.mejia@mail.com', 1, 11), 
+-- Campers adicionales
+('100000011', 'Ricardo', 'Sanchez', 'ricardo.sanchez@mail.com', 1, 2),
+('100000012', 'Marina', 'Vargas', 'marina.vargas@mail.com', 1, 3),
+-- Acudientes adicionales
+('200000011', 'Roberto', 'Sanchez', 'roberto.sanchez@mail.com', 1, 2),
+('200000012', 'Teresa', 'Vargas', 'teresa.vargas@mail.com', 1, 3);
 
 -- Inserción de tipos de teléfono
 INSERT INTO TipoTelefono (tipoTel) VALUES
@@ -161,7 +167,11 @@ INSERT INTO Telefono (telefono, persona_id, tipoTel_id) VALUES
 ('3132075504', 21, 1),
 ('3214180419', 22, 1),
 ('3143913746', 23, 1),
-('6077246122', 23, 2);
+('6077246122', 24, 2),
+('3201234567', 24, 1), 
+('3212345678', 25, 1),
+('3223456789', 26, 1),
+('3234567890', 27, 1);
 
 -- Inserción de estados de campers
 INSERT INTO EstadoCamper (estado) VALUES 
@@ -190,7 +200,9 @@ INSERT INTO Camper (persona_id, estado_id, riesgo_id) VALUES
 (10, 4, 1),
 (11, 5, 2),
 (12, 2, 3),
-(13, 3, 1);
+(13, 3, 1),
+(24, 6, 3),  -- Ricardo: Expulsado, Riesgo Alto
+(25, 7, 2);  -- Marina: Retirado, Riesgo Medio
 
 -- Inserción de acudientes
 INSERT INTO Acudiente (persona_id, camper_id) VALUES 
@@ -203,7 +215,9 @@ INSERT INTO Acudiente (persona_id, camper_id) VALUES
 (20, 7),
 (21, 8),
 (22, 9),
-(23, 10);
+(23, 10),
+(26, 11),
+(27, 12);
 
 -- Inserción de bases de datos
 INSERT INTO Basedatos (nombre) VALUES
@@ -506,6 +520,49 @@ INSERT INTO Evaluacion (camper_id, skill_id) VALUES
 (7, 21),
 (8, 23),
 (9, 26);
+
+-- Trigger para el calculo de nota final
+DELIMITER //
+
+CREATE TRIGGER calcularNotaFinal
+AFTER INSERT ON Nota
+FOR EACH ROW
+BEGIN
+    DECLARE nota_examen DECIMAL(5,2);
+    DECLARE nota_proyecto DECIMAL(5,2);
+    DECLARE nota_actividad DECIMAL(5,2);
+    DECLARE nota_final DECIMAL(5,2);
+    
+    -- Obtener las notas por tipo de evaluación
+    SELECT COALESCE(nota, 0) INTO nota_examen
+    FROM Nota
+    WHERE evaluacion_id = NEW.evaluacion_id 
+    AND tipoEvaluacion_id = 1;
+    
+    SELECT COALESCE(nota, 0) INTO nota_proyecto
+    FROM Nota
+    WHERE evaluacion_id = NEW.evaluacion_id 
+    AND tipoEvaluacion_id = 2;
+    
+    SELECT COALESCE(nota, 0) INTO nota_actividad
+    FROM Nota
+    WHERE evaluacion_id = NEW.evaluacion_id 
+    AND tipoEvaluacion_id = 3;
+    
+    -- Calcular nota final según porcentajes
+    SET nota_final = (nota_examen * 0.30) + (nota_proyecto * 0.60) + (nota_actividad * 0.10);
+    
+    -- Actualizar la nota final y el estado en la tabla Evaluacion
+    UPDATE Evaluacion 
+    SET notaFinal = nota_final,
+        estado = CASE 
+            WHEN nota_final >= 60 THEN 'Aprobado'
+            ELSE 'Reprobado'
+        END
+    WHERE id = NEW.evaluacion_id;
+END //
+
+DELIMITER ;
 
 -- Inserción de notas para los campers para cada tipo de evaluación
 INSERT INTO Nota (nota, evaluacion_id, tipoEvaluacion_id) VALUES 
